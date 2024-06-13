@@ -1,6 +1,6 @@
 # Bannatore
 
-Bannatore is a bot Telegram that allows automatic moderation of Telegram chat groups, using a LLM. Developed for the "Technologies for Advanced Programming" course exam, edition 2023/24, of CS degree at University of Catania.
+Bannatore is a Telegram bot that allows automatic moderation of Telegram chat groups, using a LLM. Developed for the "Technologies for Advanced Programming" course exam, edition 2023/24, of CS degree at University of Catania.
 
 
 ## Application goals
