@@ -17,7 +17,7 @@ es = Elasticsearch(hosts=ELASTIC_NODE)
 #Message eraser
 async def delete_messages():
 
-    application = Application.builder().token("***REMOVED***").build()
+    application = Application.builder().token("YOUR_TOKEN").build()
     match_bannables = {
         "match": {"label": 1}
     }
