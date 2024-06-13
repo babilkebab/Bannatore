@@ -1,0 +1,138 @@
+version: "3"
+
+services:
+
+  producer:
+    build:
+      context: ./producer
+      dockerfile: Dockerfile
+    container_name: producer
+    depends_on:
+      - fluentd
+    networks:
+      tap:
+
+  moderator:
+    build:
+      context: ./moderator
+      dockerfile: Dockerfile
+    container_name: moderator
+    depends_on:
+      - elasticsearch
+    networks:
+      tap:
+      
+
+  kafka_zookeeper:
+    build:
+      context: ./kafka
+      dockerfile: Dockerfile
+    container_name: kafka_zookeeper
+    ports:
+      - 2181:2181
+    command: > 
+      bash -c "set -v
+               mkdir -p /tmp/zookeeper
+               cd /opt/kafka
+               zookeeper-server-start.sh config/zookeeper.properties"
+    networks:
+      tap:
+        ipv4_address: 10.0.100.22
+
+  
+  kafka_broker:
+    build:
+      context: ./kafka
+      dockerfile: Dockerfile
+    container_name: kafka_broker
+    depends_on:
+      - kafka_zookeeper
+    ports:
+      - 9092:9092
+    command: > 
+      bash -c "set -v
+               cd /opt/kafka
+               kafka-server-start.sh config/server.properties"
+    networks:
+      tap:
+        ipv4_address: 10.0.100.23
+
+
+  messaggi_topic:
+    build:
+      context: ./kafka
+      dockerfile: Dockerfile
+    container_name: messaggi_topic
+    command: > 
+      bash -c "set -v
+               cd /opt/kafka
+               kafka-topics.sh --bootstrap-server 10.0.100.23:9092 --list
+               kafka-topics.sh --create --bootstrap-server 10.0.100.23:9092 --replication-factor 1 --partitions 1 --topic messaggi
+               kafka-topics.sh --bootstrap-server 10.0.100.23:9092 --list"
+    depends_on: 
+        - kafka_broker
+    networks:
+      tap:
+    
+
+  fluentd:
+    container_name: fluentd
+    build:
+      context: ./fluentd
+      dockerfile: Dockerfile
+    depends_on:
+      - kafka_broker
+    volumes:
+      - ./fluentd/conf:/fluentd/etc/
+    restart: always
+    command: >
+             bash -c 'fluentd -c /fluentd/etc/fluentd.conf'
+    mem_limit: 512m
+    networks:
+      tap:
+        ipv4_address: 10.0.100.21
+  
+  spark:
+    build:
+      context: ./spark
+      dockerfile: Dockerfile
+    container_name: spark
+    ports:
+      - 4040:4040
+    depends_on:
+      - producer
+      - elasticsearch
+    networks:
+        tap:
+    mem_limit: 6g
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    container_name: elasticsearch
+    ports:
+      - 9200:9200
+    networks:
+      tap:
+        ipv4_address: 10.0.100.25  
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.13.4
+    environment:
+      - elasticsearch.hosts=http://10.0.100.25:9200
+      - xpack.monitoring.ui.container.elasticsearch.enabled=true
+      - server.host="kibana"
+      - server.name=kibana
+      - xpack.encryptedSavedObjects.encryptionKey=iYU2RF{yT&&-]8D:ew#;b!*6/8=2q:Px
+    container_name: kibana
+    ports:
+      - 5601:5601
+    networks:
+      tap:
+        ipv4_address: 10.0.100.27
+
+networks:
+  tap:
+    external: true
