@@ -23,7 +23,7 @@ Modern Telegram group chats are very crowded, but they lack of moderation. Human
 - **Apache Spark Structured Streaming**: Stream processing engine that process data coming from Kafka using Spark DataFrame APIs.
 
 ### Centralized Service:
-- **[Zookeper](https://zookeeper.apache.org/)**: Used as a centralized service for managing and coordinating nodes within the Kafka cluster.
+- **[Zookeeper](https://zookeeper.apache.org/)**: Used as a centralized service for managing and coordinating nodes within the Kafka cluster.
 
 ### Data Processing:
 - **[Apache Spark](https://spark.apache.org/)**: Open-source unified, distributed analytics engine designed for large-scale data processing. 
