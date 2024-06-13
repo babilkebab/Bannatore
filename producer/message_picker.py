@@ -44,7 +44,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 
 def main() -> None:
 
-    application = Application.builder().token("***REMOVED***").build()
+    application = Application.builder().token("YOUR_TOKEN").build()
 
     message_handler = MessageHandler(None, handle_message)
     application.add_handler(message_handler)
