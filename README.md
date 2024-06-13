@@ -51,7 +51,7 @@ Modern Telegram group chats are very crowded, but they lack of moderation. Human
 
 - Click this [link](https://docs.docker.com/engine/install/) select your OS and follow the instructions to install Docker. If you are on Windows or MacOS, follow this [link](https://docs.docker.com/desktop/) to install Docker Desktop.
 
-- Run `sudo apt-get update` and `sudo apt-get install docker-compose-plugin` to install Docker Compose (it's included in Docker Desktop also).
+- Run `sudo apt-get update` and `sudo apt-get install docker-compose-plugin` to install Docker Compose (it's also included in Docker Desktop).
 
 - Run `docker network create --subnet=10.0.100.0/24 tap` to create container virtual network.
 
