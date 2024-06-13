@@ -63,3 +63,9 @@ Kibana visualizations are available at http://10.0.100.27:5601/.
 
 ![Kibana](slideshow/imgs/kibana.png)
 
+
+### Datasets used for model training:
+- https://github.com/jing-qian/A-Benchmark-Dataset-for-Learning-to-Intervene-in-Online-Hate-Speech/tree/master
+- https://github.com/t-davidson/hate-speech-and-offensive-language/tree/master/data
+- https://www.kaggle.com/datasets/arkhoshghalb/twitter-sentiment-analysis-hatred-speech?select=train.csv
+- https://github.com/hate-alert/HateXplain/tree/master/Data
