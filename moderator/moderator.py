@@ -46,14 +46,13 @@ async def delete_messages():
 
             print(f"Got {len(hits)} hits:")
 
-            #Delete every message hitted from chats
+            #Delete every message hitted from chats, and advise group chat members
             for hit in hits:
                 delete_text = f"Il messaggio '{hit['_source']['text']}', inviato dall'utente '{hit["_source"]["sender"]["username"]}', è stato rimosso perchè considerato offensivo"
                 await application.bot.send_message(chat_id=hit["_source"]["chat_id"], reply_to_message_id=hit["_source"]["message_id"], text=delete_text)
 
                 await application.bot.deleteMessage(message_id = hit["_source"]["message_id"],
-                                        chat_id = hit["_source"]["chat_id"]) #se il classificatore mi dice bannabile lo cancello """
-                    # mando un messaggio all'utente dicendogli che il messaggio è stato rimosso
+                                        chat_id = hit["_source"]["chat_id"]) 
             time.sleep(0.5)
         except Exception as e:
             continue
